@@ -38,168 +38,185 @@
 </div>
 <script>
     $(document).ready(function() {
-  var oDataUrl = _spPageContextInfo.webAbsoluteUrl + "/_api/web/lists/getbytitle('Products')/items?$select=Title,Price,Category,Description,ProductImage0&$orderby=Title";
-  $.ajax({
-    url: oDataUrl,
-    type: "GET",
-    headers: { "accept": "application/json;odata=verbose" },
-    success: function(data) {
-      var items = data.d.results;
-      var html = "";
-      var categories = [];
-      for (var i = 0; i < items.length; i++) {
-        html += "<div class='col-sm-6 col-md-4 col-lg-3 product-item' data-category='" + items[i].Category.results.join(" ") + "' data-price='" + items[i].Price + "'>";
-        html += "<div class='card mb-4'>";
-        html += "<img class='card-img-top' src='" + items[i].ProductImage0.Url + "'>";
-        html += "<div class='card-body'>";
-        html += "<h5 class='card-title'>" + items[i].Title + "</h5>";
-        html += "<p class='card-text'>" + items[i].Description + "</p>";
-        html += "<p class='card-text'><strong>$" + items[i].Price + "</strong></p>";
-        html += "</div></div></div>";
-        var itemCategories = items[i].Category.results;
-        for (var j = 0; j < itemCategories.length; j++) {
-          if (!categories.includes(itemCategories[j])) {
-            categories.push(itemCategories[j]);
-          }
-        }
-      }
-    });
-
-    function renderCategoryFilters() {
-        var categoryFilters = {};
-        $(".product-item").each(function() {
-          var categories = $(this).data("category").split(",");
-          for (var i = 0; i < categories.length; i++) {
-            if (! (categories[i] in categoryFilters)) {
-              categoryFilters[categories[i]] = false;
-            }
-          }
-        });
-      
-        var html = "";
-        for (var category in categoryFilters) {
-          html += "<div class='form-check'>";
-          html += "<input class='form-check-input' type='checkbox' id='" + category + "' name='categoryFilter' value='" + category + "'>";
-          html += "<label class='form-check-label' for='" + category + "'>" + category + "</label>";
-          html += "</div>";
-        }
-        $("#categoryFilters").html(html);
-      }
-      
-      renderCategoryFilters();
-      
-      $(".form-check-input").on("click",
-      function() {
-        var categoryFilters = [];
-      
-        // get selected category
-        $("input[name='categoryFilter']:checked").each(function() {
-          categoryFilters.push($(this).val());
-        });
-      
-        // hide all products
-        $(".product-item").hide();
-      
-        // loop through all products and show those that match the selected filters
-        $(".product-item").each(function() {
-          var product = $(this);
-          var productCategories = product.data("category").split(",");
-          // check if product matches the selected category filters
-          var categoryMatch = false;
-          if (categoryFilters.length == 0) {
-            // if no category is selected, show all products
-            categoryMatch = true;
-          } else {
-            for (var i = 0; i < productCategories.length; i++) {
-              if (categoryFilters.indexOf(productCategories[i]) >= 0) {
-                categoryMatch = true;
-                break;
+        var oDataUrl = _spPageContextInfo.webAbsoluteUrl + "/_api/web/lists/getbytitle('Products')/items?$select=Title,Price,Category,Description,ProductImage0&$orderby=Title";
+        $.ajax({
+          url: oDataUrl,
+          type: "GET",
+          headers: { "accept": "application/json;odata=verbose" },
+          success: function(data) {
+            var items = data.d.results;
+            var html = "";
+            var categories = [];
+            for (var i = 0; i < items.length; i++) {
+              html += "<div class='col-sm-6 col-md-4 col-lg-3 product-item' data-category='" + items[i].Category.results.join(" ") + "' data-price='" + items[i].Price + "'>";
+              html += "<div class='card mb-4'>";
+              html += "<img class='card-img-top' src='" + items[i].ProductImage0.Url + "'>";
+              html += "<div class='card-body'>";
+              html += "<h5 class='card-title'>" + items[i].Title + "</h5>";
+              html += "<p class='card-text'>" + items[i].Description + "</p>";
+              html += "<p class='card-text'><strong>$" + items[i].Price + "</strong></p>";
+              html += "</div></div></div>";
+              var itemCategories = items[i].Category.results;
+              for (var j = 0; j < itemCategories.length; j++) {
+                if (!categories.includes(itemCategories[j])) {
+                  categories.push(itemCategories[j]);
+                }
               }
             }
-          }
-          if (categoryMatch) {
-            product.show();
+            // Populate category filters
+            var html = "";
+            for (var i = 0; i < categories.length; i++) {
+              html += "<div class='form-check'>";
+              html += "<input class='form-check-input' type='checkbox' id='" + categories[i] + "' name='categoryFilter' value='" + categories[i] + "'>";
+              html += "<label class='form-check-label' for='" + categories[i] + "'>" + categories[i] + "</label>";
+              html += "</div>";
+            }
+            $(".category-filters").html(html);
+          },
+          error: function(error) {
+            console.log(JSON.stringify(error));
           }
         });
-      });
+      
+        $(".form-check-input").on("click", function() {
+          var categoryFilters = [];
+      
+          // get selected category
+          $("input[name='categoryFilter']:checked").each(function() {
+            categoryFilters.push($(this).val());
+          });
+      
+          // hide all products
+          $(".product-item").hide();
+      
+          // loop through all products and show those that match the selected filters
+          $(".product-item").each(function() {
+            var product = $(this);
+            var productCategories = product.data("category").split(",");
+            // check if product matches the selected category filters
+            var categoryMatch = false;
+            if (categoryFilters.length == 0) {
+              // if no category is selected, show all products
+              categoryMatch = true;
+            } else {
+              for (var i = 0; i < productCategories.length; i++) {
+                if (categoryFilters.indexOf(productCategories[i]) >= 0) {
+                  categoryMatch = true;
+                 
+                  break;
+                }
+                }
+                if (categoryMatch) {
+                product.show();
+                }
+                });
+                }
+                // call the function to render category filters
+renderCategoryFilters();
+
+// event listener for category filters
+$(".category-filters").on("click", "input[type=checkbox]", function() {
+  // get selected categories
+  var selectedCategories = [];
+  $("input[type=checkbox]:checked").each(function() {
+    selectedCategories.push($(this).val());
+  });
+
+  // show/hide products based on selected categories
+  $(".product-item").each(function() {
+    var categories = $(this).data("category").split(",");
+    var shouldShow = false;
+    for (var i = 0; i < selectedCategories.length; i++) {
+      if (categories.includes(selectedCategories[i])) {
+        shouldShow = true;
+        break;
+      }
+    }
+    if (shouldShow) {
+      $(this).show();
+    } else {
+      $(this).hide();
+    }
+  });
+});
+      
     </script>
     <style>
-    /* Product Gallery */
-    .product-gallery {
-      display: flex;
-      flex-wrap: wrap;
-      /*justify-content: space-between;*/
-      align-items: stretch;
-    }
-    .product-item {
-    flex: 0 0 calc(25% - 1rem);
-    margin-bottom: 2rem;
-    transition: transform 0.2s;
-    }
-    
-    .product-item:hover {
-    transform: scale(1.05);
-    }
-    
-    .product-item .card {
-    border: none;
-    border-radius: 0;
-    }
-    
-    .product-item .card-img-top {
-    height: 200px;
-    object-fit: cover;
-    }
-    
-    .product-item .card-title {
-    font-size: 1.2rem;
-    font-weight: bold;
-    }
-    
-    .product-item .card-text {
-    font-size: 1rem;
-    color: #777;
-    margin-bottom: 1rem;
-    }
-    
-    .product-item .card-footer {
-    border-top: none;
-    background-color: transparent;
-    padding-top: 0;
-    margin-top: auto;
-    }
-    
-    .product-item .card-footer .btn {
-    border-radius: 0;
-    width: 100%;
-    }
-    
-    /* Filters */
-    .filters {
-    background-color: #f5f5f5;
-    padding: 1rem;
-    margin-bottom: 2rem;
-    }
-    
-    .filters h5 {
-    font-size: 1.2rem;
-    font-weight: bold;
-    margin-top: 0;
-    margin-bottom: 1rem;
-    }
-    
-    .filters .form-check {
-    margin-bottom: 0.5rem;
-    }
-    
-    .filters .form-check-label {
-    font-weight: normal;
-    }
-    
-    .filters .form-check-input {
-    margin-right: 0.5rem;
-    }
-    
-    </style>
+        /* Product Gallery */
+        .product-gallery {
+          display: flex;
+          flex-wrap: wrap;
+          align-items: stretch;
+        }
+      
+        .product-item {
+          flex: 0 0 calc(25% - 1rem);
+          margin-bottom: 2rem;
+          transition: transform 0.2s;
+        }
+      
+        .product-item:hover {
+          transform: scale(1.05);
+        }
+      
+        .product-item .card {
+          border: none;
+          border-radius: 0;
+        }
+      
+        .product-item .card-img-top {
+          height: 200px;
+          object-fit: cover;
+        }
+      
+        .product-item .card-title {
+          font-size: 1.2rem;
+          font-weight: bold;
+        }
+      
+        .product-item .card-text {
+          font-size: 1rem;
+          color: #777;
+          margin-bottom: 1rem;
+        }
+      
+        .product-item .card-footer {
+          border-top: none;
+          background-color: transparent;
+          padding-top: 0;
+          margin-top: auto;
+        }
+      
+        .product-item .card-footer .btn {
+          border-radius: 0;
+          width: 100%;
+        }
+      
+        /* Filters */
+        .filters {
+          background-color: #f5f5f5;
+          padding: 1rem;
+          margin-bottom: 2rem;
+        }
+      
+        .filters h5 {
+          font-size: 1.2rem;
+          font-weight: bold;
+          margin-top: 0;
+          margin-bottom: 1rem;
+        }
+      
+        .filters .form-check {
+          margin-bottom: 0.5rem;
+        }
+      
+        .filters .form-check-label {
+          font-weight: normal;
+        }
+      
+        .filters .form-check-input {
+          margin-right: 0.5rem;
+        }
+      </style>
     </body>
-    </html>
+</html>
