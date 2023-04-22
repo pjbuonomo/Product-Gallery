@@ -1,0 +1,126 @@
+<html>
+<head>
+        <!-- jQuery library -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+
+<!-- Bootstrap CSS -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+
+<!-- Font Awesome icons -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" integrity="sha512-/3qz6LmQW8VvkezkS9X7q95xpCuA4W8lL4du4O4/WzRlOm07jD8GMg0tzoX9s0sFpZxONLGGvMyzTQ2tVfHtTQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+<!-- Custom CSS -->
+<link rel="stylesheet" href="assets/css/style.css">
+
+    </head>
+<body>
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-md-3 col-lg-2">
+      <div class="card">
+        <div class="card-header">
+          <h5 class="card-title mb-0">Filter Products</h5>
+        </div>
+        <div class="card-body">
+          <div>
+            <h6 class="card-subtitle mb-2 text-muted">Category</h6>
+            <div class="category-filters">
+              <!-- Category filters will be inserted here -->
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-9 col-lg-10">
+    	<div class="galleryContainer" style="margin-left:100px">
+      <div class="row product-gallery"></div>
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+    $(document).ready(function() {
+  var oDataUrl = _spPageContextInfo.webAbsoluteUrl + "/_api/web/lists/getbytitle('Products')/items?$select=Title,Price,Category,Description,ProductImage0&$orderby=Title";
+  $.ajax({
+    url: oDataUrl,
+    type: "GET",
+    headers: { "accept": "application/json;odata=verbose" },
+    success: function(data) {
+      var items = data.d.results;
+      var html = "";
+      for (var i = 0; i < items.length; i++) {
+        html += "<div class='col-sm-6 col-md-4 col-lg-3 product-item' data-category='" + items[i].Category.results.join(" ") + "' data-price='" + items[i].Price + "'>";
+        html += "<div class='card mb-4'>";
+        html += "<img class='card-img-top' src='" + items[i].ProductImage0.Url + "'>";
+        html += "<div class='card-body'>";
+        html += "<h5 class='card-title'>" + items[i].Title + "</h5>";
+        html += "<p class='card-text'>" + items[i].Description + "</p>";
+        html += "<p class='card-text'><strong>$" + items[i].Price + "</strong></p>";
+        html += "</div></div></div>";
+      }
+      $(".product-gallery").html(html);
+
+      // Populate category filters
+      var categories = [];
+      for (var i = 0; i < items.length; i++) {
+        var productCategories = items[i].Category.results;
+        for (var j = 0; j < productCategories.length; j++) {
+    // get all unique categories from items
+    var allCategories = [];
+    for (var i = 0; i < items.length; i++) {
+        allCategories = allCategories.concat(items[i].Category.results);
+    }
+    allCategories = [...new Set(allCategories)];
+
+    // add category checkboxes
+    for (var i = 0; i < allCategories.length; i++) {
+        var categoryCheckbox = "<div class='form-check'>";
+        categoryCheckbox += "<input class='form-check-input categoryFilter' type='checkbox' name='categoryFilter' id='" + allCategories[i] + "' value='" + allCategories[i] + "'>";
+        categoryCheckbox += "<label class='form-check-label' for='" + allCategories[i] + "'>";
+        categoryCheckbox += allCategories[i];
+        categoryCheckbox += "</label>";
+        categoryCheckbox += "</div>";
+        $(".category-filters").append(categoryCheckbox);
+    }
+
+    // add event listener for category filters
+    $(".categoryFilter").on("click", function() {
+        var categoryFilters = [];
+        var priceFilters = [];
+
+        // get selected category
+        $("input[name='categoryFilter']:checked").each(function() {
+            categoryFilters.push($(this).val());
+        });
+
+        // get selected price range
+        $("input[name='priceFilter']:checked").each(function() {
+            priceFilters.push($(this).val());
+        });
+
+        // hide all products
+        $(".product-item").hide();
+
+        // loop through all products and show those that match the selected filters
+        $(".product-item").each(function() {
+            var product = $(this);
+            var productCategories = product.data("category").split(",");
+            // check if product matches the selected category filters
+            var categoryMatch = false;
+            if (categoryFilters.length == 0) {
+                // if no category is selected, show all products
+                categoryMatch = true;
+            } else {
+                for (var i = 0; i < productCategories.length; i++) {
+                    if (categoryFilters.indexOf(productCategories[i]) >= 0) {
+                        categoryMatch = true;
+                        break;
+                    }
+                }
+            }
+            if (categoryMatch) {
+                product.show();
+            }
+        });
+    });
+});
