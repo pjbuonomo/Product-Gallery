@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Ticket Information</title>
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <!-- Font Awesome icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" integrity="sha512-/3qz6LmQW8VvkezkS9X7q95xpCuA4W8lL4du4O4/WzRlOm07jD8GMg0tzoX9s0sFpZxONLGGvMyzTQ2tVfHtTQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+</head>
+<body>
+    <div class="container-fluid">
+        <h1 class="my-5">Ticket Information</h1>
+        <div class="row mb-5">
+            <div class="col-md-4">
+                <p class="font-weight-bold mb-1">Request ID: <span class="text-muted">{DATA}</span></p>
+            </div>
+            <div class="col-md-4">
+                <p class="font-weight-bold mb-1">Assigned To: <span class="text-muted">{DATA}</span></p>
+            </div>
+            <div class="col-md-4">
+                <p class="font-weight-bold mb-1">Status: <span class="text-muted">{DATA}</span></p>
+            </div>
+        </div>
+        <div class="card mb-5">
+            <div class="card-header">
+                <h5 class="card-title mb-0">Dates</h5>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-6">
+                        <p class="font-weight-bold mb-1">Date Created: <span class="text-muted">{DATA}</span></p>
+                        <p class="font-weight-bold mb-1">Last Updated: <span class="text-muted">{DATA}</span></p>
+                    </div>
+                    <div class="col-md-6">
+                        <p class="font-weight-bold mb-1">Deadline: <span class="text-muted">{DATA}</span></p>
+                        <p class="font-weight-bold mb-1">Date Completed: <span class="text-muted">{DATA}</span></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="card mb-5">
+            <div class="card-header">
+              <h5 class="card-title mb-0">Request Details</h5>
+            </div>
+            <div class="card-body">
+              <div class="row">
+                <div class="col-md-6">
+                  <p class="font-weight-bold mb-1">Created By: <span class="text-muted">{DATA}</span></p>
+                  <p class="font-weight-bold mb-1">Request For: <span class="text-muted">{DATA}</span></p>
+                  <p class="font-weight-bold mb-1">Email: <span class="text-muted">{DATA}</span></p>
+                  <p class="font-weight-bold mb-1">Purpose of Order: <span class="text-muted">{DATA}</span></p>
+                </div>
+                <div class="col-md-6">
+                  <p class="font-weight-bold mb-1">Project Code: <span class="text-muted">{DATA}</span></p>
+                  <p class="font-weight-bold mb-1">Department: <span class="text-muted">{DATA}</span></p>
+                  <p class="font-weight-bold mb-1">Approver: <span class="text-muted">{DATA}</span></p>
+                  <p class="font-weight-bold mb-1">Item Details: <span class="text-muted">{DATA}</span></p>
+                </div>
+              </div>
+            </div>
+          </div>
+          
