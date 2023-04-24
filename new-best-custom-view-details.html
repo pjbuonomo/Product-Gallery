@@ -1,0 +1,76 @@
+<div id="customID"></div>
+<div id="customCreated"></div>
+<div id="customModified"></div>
+<div id="customTitle"></div>
+<div id="customDIERCode"></div>
+<div id="customProjectCode"></div>
+<div id="customApprover"></div>
+<div id="customDepartment"></div>
+<div id="customShipTo"></div>
+<div id="customAttentionTo"></div>
+<div id="customRequestFor"></div>
+<div id="customStatus"></div>
+<div id="customComment"></div>
+<div id="customItemDetails"></div>
+<div id="customAssignedTo"></div>
+
+<script type="text/javascript" src="/_layouts/15/sp.runtime.js"></script>
+<script type="text/javascript" src="/_layouts/15/sp.js"></script>
+
+<script type="text/javascript">
+  document.addEventListener("DOMContentLoaded", function() {
+    var listItemId = GetUrlKeyValue("ID");
+    var listId = _spPageContextInfo.pageListId;
+
+    function getItemDetails(listId, listItemId) {
+      var clientContext = new SP.ClientContext.get_current();
+      var list = clientContext.get_web().get_lists().getById(listId);
+      var listItem = list.getItemById(listItemId);
+
+      // Load the required fields
+      clientContext.load(listItem);
+      clientContext.executeQueryAsync(
+        function() {
+          // Get field values
+          var id = listItem.get_item("ID");
+          var created = listItem.get_item("Created");
+          var modified = listItem.get_item("Modified");
+          var title = listItem.get_item("Title");
+          var dierCode = listItem.get_item("DIER_x0020_Code");
+          var projectCode = listItem.get_item("Project_x0020_Code");
+          var approver = listItem.get_item("Approver").get_lookupValue();
+          var department = listItem.get_item("Department");
+          var shipTo = listItem.get_item("Ship_x0020_To");
+          var attentionTo = listItem.get_item("Attention_x0020_To");
+          var requestFor = listItem.get_item("Request_x0020_For");
+          var status = listItem.get_item("Status");
+          var comment = listItem.get_item("Comment");
+          var itemDetails = listItem.get_item("Item_x0020_Details");
+          var assignedTo = listItem.get_item("AssignedTo").get_lookupValue();
+
+          // Update the HTML elements
+          document.getElementById("customID").innerText = "ID: " + id;
+          document.getElementById("customCreated").innerText = "Created: " + created.toLocaleString();
+          document.getElementById("customModified").innerText = "Modified: " + modified.toLocaleString();
+          document.getElementById("customTitle").innerText = "Title: " + title;
+          document.getElementById("customDIERCode").innerText = "DIER Code: " + dierCode;
+          document.getElementById("customProjectCode").innerText = "Project Code: " + projectCode;
+          document.getElementById("customApprover").innerText = "Approver: " + approver;
+          document.getElementById("customDepartment").innerText = "Department: " + department;
+          document.getElementById("customShipTo").innerText = "Ship To: " + shipTo;
+          document.getElementById("customAttentionTo").innerText = "Attention To: " + attentionTo;
+          document.getElementById("customRequestFor").innerText = "Request For: " + requestFor;
+          document.getElementById("customStatus").innerText = "Status: " + status;
+          document.getElementById("customComment").innerText = "Comment: " + comment;
+          document.getElementById("customItemDetails").innerText = "Item Details: " + itemDetails;
+          document.getElementById("customAssignedTo").innerText = "Assigned To: " + assignedTo;
+        },
+        function(sender, args) {
+          console.error("Error: " + args.get_message());
+        }
+      );
+    }
+    
+    getItemDetails(listId, listItemId);
+});
+</script>
