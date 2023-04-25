@@ -3,112 +3,62 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>SharePoint FAQ Accordion</title>
-  <link href="https://maxcdn.bootstrapcdn.com/bootstrap/5.0.0-alpha1/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-KyZXEAg3QhqLMpG8r+Knujsl5/6en8XCp+HHAAK5GSLf2xlYtvJ8U2Q4U+9cuEnJoa3" crossorigin="anonymous">
-  <link rel="stylesheet" href="styles.css">
+  <title>FAQ Accordion</title>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/5.0.0-beta1/css/bootstrap.min.css">
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/5.0.0-beta1/js/bootstrap.min.js"></script>
 </head>
 <body>
-  <div class="container mt-5">
-    <h2 class="mb-4">FAQs</h2>
-    <div class="accordion" id="faqAccordion">
-      <!-- The Accordion items will be populated here -->
-    </div>
-  </div>
-  
-  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/5.0.0-alpha1/js/bootstrap.min.js" integrity="sha384-pzjw8f+ua7Kw1TIq0v8FqFjcJ6pajs/rfdfs3SO+kD4Ck5BdPtF+to8xMp9Q9iMG" crossorigin="anonymous"></script>
-  <script src="https://unpkg.com/@pnp/sp@2.9.0/dist/sp.es5.umd.bundle.min.js"></script>
-  <script src="script.js"></script>
-</body>
-</html>
-$(document).ready(function() {
-  const listName = "FAQs";
-  let accordion = $("#faqAccordion");
-
-  // Initialize the SharePoint library
-  $pnp.setup({
-    sp: {
-      baseUrl: "https://your-domain.sharepoint.com/sites/your-site"
-    }
-  });
-
-  // Fetch data from the SharePoint list and populate the Accordion
-  $pnp.sp.web.lists.getByTitle(listName).items.select("Title", "Question", "Answer").get().then(items => {
-    items.forEach((item, index) => {
-      accordion.append(`
-        <div class="accordion-item">
-          <h2 class="accordion-header" id="heading${index}">
-            <button class="accordion-button ${index === 0 ? '' : 'collapsed'}" type="button" data-bs-toggle="collapse" data-bs-target="#collapse${index}" aria-expanded="${index === 0 ? 'true' : 'false'}" aria-controls="collapse${index}">
-              ${item.Question}
-            </button>
-          </h2>
-          <div id="collapse${index}" class="accordion-collapse collapse ${index === 0 ? 'show' : ''}" aria-labelledby="heading${index}" data-bs-parent
-          <div id="collapse${index}" class="accordion-collapse collapse ${index === 0 ? 'show' : ''}" aria-labelledby="heading${index}" data-bs-parent="#faqAccordion">
-            <div class="accordion-body">
-              ${item.Answer}
-            </div>
-          </div>
+    <div class="container mt-5">
+        <div class="accordion" id="faqAccordion">
+          <!-- FAQs will be inserted here -->
         </div>
-      `);
-    });
-  }).catch(error => {
-    console.error("Error fetching data from the SharePoint list:", error);
-  });
-});
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>SharePoint FAQ Accordion</title>
-  <link href="https://maxcdn.bootstrapcdn.com/bootstrap/5.0.0-alpha1/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-KyZXEAg3QhqLMpG8r+Knujsl5/6en8XCp+HHAAK5GSLf2xlYtvJ8U2Q4U+9cuEnJoa3" crossorigin="anonymous">
-  <link rel="stylesheet" href="styles.css">
-</head>
-<body>
-  <div class="container mt-5">
-    <h2 class="mb-4">FAQs</h2>
-    <div class="accordion" id="faqAccordion">
-      <!-- The Accordion items will be populated here -->
-    </div>
-  </div>
-  
-  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/5.0.0-alpha1/js/bootstrap.min.js" integrity="sha384-pzjw8f+ua7Kw1TIq0v8FqFjcJ6pajs/rfdfs3SO+kD4Ck5BdPtF+to8xMp9Q9iMG" crossorigin="anonymous"></script>
-  <script src="https://unpkg.com/@pnp/sp@2.9.0/dist/sp.es5.umd.bundle.min.js"></script>
-  <script src="script.js"></script>
-</body>
+      </div>
+      <script>
+        $(document).ready(function() {
+          // Fetch FAQs from the SharePoint List
+          fetchFAQs();
+      
+          function fetchFAQs() {
+            $.ajax({
+              url: _spPageContextInfo.webAbsoluteUrl + "/_api/web/lists/getByTitle('FAQs')/items?$select=Question,Answer",
+              method: "GET",
+              headers: { "Accept": "application/json; odata=verbose" },
+              success: function(data) {
+                populateFAQAccordion(data.d.results);
+              },
+              error: function(error) {
+                console.error("Error fetching FAQs: ", error);
+              }
+            });
+          }
+      
+          function populateFAQAccordion(faqs) {
+            let accordionHTML = '';
+      
+            faqs.forEach((faq, index) => {
+              accordionHTML += `
+                <div class="accordion-item">
+                  <h2 class="accordion-header">
+                    <button class="accordion-button${index !== 0 ? ' collapsed' : ''}" type="button" data-bs-toggle="collapse" data-bs-target="#collapse${index}" aria-expanded="${index === 0 ? 'true' : 'false'}" aria-controls="collapse${index}">
+                      ${faq.Question}
+                    </button>
+                  </h2>
+                  <div id="collapse${index}" class="accordion-collapse collapse${index === 0 ? ' show' : ''}" data-bs-parent="#faqAccordion">
+                    <div class="accordion-body">
+                      ${faq.Answer}
+                    </div>
+                  </div>
+                </div>
+              `;
+            });
+      
+            $('#faqAccordion').html(accordionHTML);
+          }
+        });
+      </script>
+      
+      </body>
+      
 </html>
-$(document).ready(function() {
-  const listName = "FAQs";
-  let accordion = $("#faqAccordion");
-
-  // Initialize the SharePoint library
-  $pnp.setup({
-    sp: {
-      baseUrl: "https://your-domain.sharepoint.com/sites/your-site"
-    }
-  });
-
-  // Fetch data from the SharePoint list and populate the Accordion
-  $pnp.sp.web.lists.getByTitle(listName).items.select("Title", "Question", "Answer").get().then(items => {
-    items.forEach((item, index) => {
-      accordion.append(`
-        <div class="accordion-item">
-          <h2 class="accordion-header" id="heading${index}">
-            <button class="accordion-button ${index === 0 ? '' : 'collapsed'}" type="button" data-bs-toggle="collapse" data-bs-target="#collapse${index}" aria-expanded="${index === 0 ? 'true' : 'false'}" aria-controls="collapse${index}">
-              ${item.Question}
-            </button>
-          </h2>
-          <div id="collapse${index}" class="accordion-collapse collapse ${index === 0 ? 'show' : ''}" aria-labelledby="heading${index}" data-bs-parent
-          <div id="collapse${index}" class="accordion-collapse collapse ${index === 0 ? 'show' : ''}" aria-labelledby="heading${index}" data-bs-parent="#faqAccordion">
-            <div class="accordion-body">
-              ${item.Answer}
-            </div>
-          </div>
-        </div>
-      `);
-    });
-  }).catch(error => {
-    console.error("Error fetching data from the SharePoint list:", error);
-  });
-});
