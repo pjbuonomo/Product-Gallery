@@ -1,0 +1,66 @@
+<div class="container">
+  <h2>FAQ</h2>
+  <div id="accordion"></div>
+</div>
+<style>
+/* Style for the FAQ section */
+.container {
+  margin-top: 50px;
+}
+
+/* Style for the accordion */
+#accordion .card-header {
+  background-color: #f7f7f7;
+  padding: 20px;
+  cursor: pointer;
+}
+
+#accordion .card-header h3 {
+  margin: 0;
+  font-weight: bold;
+}
+
+#accordion .card-body {
+  padding: 20px;
+}
+</style>
+<script>
+$(document).ready(function() {
+  // Get the FAQs from the SharePoint List using REST API
+  $.ajax({
+    url: _spPageContextInfo.webAbsoluteUrl + "/_api/web/lists/getByTitle('FAQs')/items?$select=Question,Answer",
+    type: "GET",
+    headers: {
+      "Accept": "application/json;odata=verbose"
+    },
+    success: function(data) {
+      // Loop through the FAQs and create an accordion item for each
+      $.each(data.d.results, function(index, item) {
+        var question = item.Question;
+        var answer = item.Answer;
+
+        // Create the HTML for the accordion item
+        var html = '<div class="card">' +
+          '<div class="card-header">' +
+          '<h3 class="mb-0">' + question + '</h3>' +
+          '</div>' +
+          '<div class="card-body">' + answer + '</div>' +
+          '</div>';
+
+        // Add the accordion item to the #accordion div
+        $('#accordion').append(html);
+      });
+
+      // Initialize the accordion
+      $('#accordion').accordion({
+        heightStyle: "content",
+        collapsible: true,
+        active: false
+      });
+    },
+    error: function(data) {
+      console.log(data);
+    }
+  });
+});
+</script>
