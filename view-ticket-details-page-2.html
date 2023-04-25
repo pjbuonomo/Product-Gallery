@@ -18,96 +18,60 @@
     </div>
   </div>
 
-  <div class="accordion" id="accordionExample">
-    <div class="card">
-      <div class="card-header" id="headingOne">
-        <h2 class="mb-0">
-          <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-            Section 1: Request Data
-          </button>
-        </h2>
-      </div>
-
-      <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordionExample">
-        <div class="card-body">
-          <h6 class="card-subtitle mb-2 text-muted">Created:</h6>
-          <p class="card-text">[Created data goes here]</p>
-          <h6 class="card-subtitle mb-2 text-muted">Modified:</h6>
-          <p class="card-text">[Modified data goes here]</p>
-          <h6 class="card-subtitle mb-2 text-muted">Due Date:</h6>
-          <p class="card-text">[Due Date data goes here]</p>
-          <h6 class="card-subtitle mb-2 text-muted">Date Completed:</h6>
-          <p class="card-text">[Date Completed data goes here]</p>
-        </div>
-      </div>
+  <div class="card mb-3">
+    <div class="card-header" id="headingOne">
+      <h2 class="mb-0">
+        <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+          Section 1: Request Data
+        </button>
+      </h2>
     </div>
 
-    <div class="card">
-      <div class="card-header" id="headingTwo">
-        <h2 class="mb-0">
-          <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
-            Section 2: Request Details
-          </button>
-        </h2>
-      </div>
-      <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionExample">
-        <div class="card-body">
-          <h6 class="card-subtitle mb-2 text-muted">Request For:</h6>
-          <p class="card-text">[Request For data goes here]</p>
-          <h6 class="card-subtitle mb-2 text-muted">Item Details:</h6>
-          <p class="card-text">[Item Details data goes here]</p>
-          <h6 class="card-subtitle mb-2 text-muted">Comment:</h6>
-          <p class="card-text">[Comment data goes here]</p>
+    <div id="time-card" class="row">
+        <div class="col-sm-6">
+          <div class="card-body">
+            <div class="row">
+              <div class="col-sm-6">
+                <h6 class="card-subtitle mb-2 text-muted">Created:</h6>
+              </div>
+              <div class="col-sm-6">
+                <p class="card-text">[Created data goes here]</p>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-sm-6">
+                <h6 class="card-subtitle mb-2 text-muted">Due Date:</h6>
+              </div>
+              <div class="col-sm-6">
+                <p class="card-text">[Due Date data goes here]</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      
+        <div class="col-sm-6">
+          <div class="card-body">
+            <div class="row">
+              <div class="col-sm-6">
+                <h6 class="card-subtitle mb-2 text-muted">Modified:</h6>
+              </div>
+              <div class="col-sm-6">
+                <p class="card-text">[Modified data goes here]</p>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-sm-6">
+                <h6 class="card-subtitle mb-2 text-muted">Date Completed:</h6>
+              </div>
+              <div class="col-sm-6">
+                <p class="card-text">[Date Completed data goes here]</p>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
-    </div>
-
-    <div class="card">
-      <div class="card-header" id="headingThree">
-        <h2 class="mb-0">
-          <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
-            Section 3: Shipping & Location
-          </button>
-        </h2>
-      </div>
-      <div id="collapseThree" class="collapse" aria-labelledby="headingThree" data-parent="#accordionExample">
-        <div class="card-body">
-          <h6 class="card-subtitle mb-2 text-muted">Ship To:</h6>
-          <p class="card-text">[Ship To data goes here]</p>
-          <h6 class="card-subtitle mb-2 text-muted">Attention To:</h6>
-          <p class="card-text">[Attention To data goes here]</p>
-          <h6 class="card-subtitle mb-2 text-muted">Address Line:</h6>
-          <p class="card-text">[Address Line data goes here]</p>
-          <h6 class="card-subtitle mb-2 text-muted">City:</h6>
-          <p class="card-text">[City data goes here]</p>
-          <h6 class="card-subtitle mb-2 text-muted">State:</h6>
-          <p class="card-text">[State data goes here]</p>
-          <h6 class="card-subtitle mb-2 text-muted">Postal Code/ZIP:</h6>
-          <p class="card-text">[Postal Code/ZIP data goes here]</p>
-        </div>
-      </div>
-    </div>
-
-    <div class="card">
-      <div class="card-header" id="headingFour">
-        <h2 class="mb-0">
-          <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#collapseFour" aria-expanded="false" aria-controls="collapseFour">
-            Section 4: Additional Information
-          </button>
-        </h2>
-      </div>
-      <div id="collapseFour" class="collapse" aria-labelledby="headingFour" data-parent="#accordionExample">
-        <div class="card-body">
-          <p class="card-text">[Additional Information data goes here]</p>
-        </div>
-      </div>
-    </div>
+      
   </div>
-</div>
+  </div>
 
-  <!-- Bootstrap JS -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/popper.js@2.9.3/dist/umd/popper.min.js"></script>
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-</body>
-</html>
+  </div>
