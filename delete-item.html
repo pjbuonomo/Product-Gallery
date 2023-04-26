@@ -1,0 +1,29 @@
+var trashIcon = '<a style="text-decoration: none; color: red; cursor: pointer;" data-item-id="' + row.ID + '"><i class="fa fa-trash" data-bs-toggle="modal" data-bs-target="#deleteRequestModal"></i></a>';
+var selectedItemToDelete;
+$('#pDashboard').on('click', '.fa-trash', function() {
+    selectedItemToDelete = $(this).parent().data('item-id');
+});
+<button type="button" class="btn btn-primary" onclick="deleteSelectedItem();">Yes</button>
+function deleteSelectedItem() {
+    var siteUrl = _spPageContextInfo.webAbsoluteUrl;
+    var deleteUrl = siteUrl + "/_api/web/lists/getbytitle('PurchaseRequests')/items(" + selectedItemToDelete + ")";
+    
+    $.ajax({
+        url: deleteUrl,
+        type: "POST",
+        headers: {
+            "accept": "application/json;odata=verbose",
+            "X-RequestDigest": $("#__REQUESTDIGEST").val(),
+            "IF-MATCH": "*",
+            "X-HTTP-Method": "DELETE"
+        },
+        success: function(data) {
+            alert("Item deleted successfully!");
+            $('#deleteRequestModal').modal('hide');
+            loadListItems(); // Reload the list items after deletion
+        },
+        error: function(data) {
+            alert("Failed to delete the item. Error: " + JSON.stringify(data));
+        }
+    });
+}
