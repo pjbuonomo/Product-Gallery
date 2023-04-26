@@ -21,9 +21,29 @@
 
 </html>
 
-"mData": null,
-  "render": function (data, type, row) {
-    var trashIcon = '<a href="www.example.com" style="text-decoration: none; margin-right: 10px;"><i class="fa fa-trash"></i></a>';
-    var editIcon = '<a href="www.example.com" style="text-decoration: none; margin-right: 10px;"><i class="fa fa-pencil"></i></a>';
-    var personIcon = '<a href="www.example.com" style="text-decoration: none;"><i class="fa fa-user"></i></a>';
-    return trashIcon + editIcon + personIcon;
+
+
+// Add the onclick event to the trashIcon
+var trashIcon = '<a style="text-decoration: none; color: red; cursor: pointer;" onclick="openDeleteModal(' + full.ID + ');"><i class="fa fa-trash" data-bs-toggle="modal" data-bs-target="#deleteRequestModal"></i></a>';
+
+// Declare a global variable to store the item ID
+var itemToDelete;
+
+// Open the delete modal and store the item ID
+function openDeleteModal(itemId) {
+  itemToDelete = itemId;
+  var deleteRequestModal = new bootstrap.Modal(document.getElementById('deleteRequestModal'));
+  deleteRequestModal.show();
+}
+
+// Event listener for the "Yes" button
+document.getElementById("confirmDelete").addEventListener("click", deleteItem);
+
+// Function to delete the item
+function deleteItem() {
+  if (itemToDelete) {
+    // Call your delete function here, for example:
+    // deleteListItem(itemToDelete);
+    console.log("Item to delete:", itemToDelete);
+  }
+}
