@@ -142,4 +142,21 @@ function confirmDelete(itemId) {
       // Cancel the delete action
     }
   }
+  function confirmDelete(itemId) {
+    if (window.confirm("Are you sure you want to delete this item?")) {
+      var ctx = SP.ClientContext.get_current();
+      var list = ctx.get_web().get_lists().getByTitle("PurchaseRequests");
+      var item = list.getItemById(itemId);
+      item.deleteObject();
+      ctx.executeQueryAsync(function() {
+        alert("Item deleted successfully.");
+        // Refresh the data table
+        loadListItems();
+      }, function(sender, args) {
+        alert("Error: " + args.get_message());
+      });
+    } else {
+      // Cancel the delete action
+    }
+  }
   
