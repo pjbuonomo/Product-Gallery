@@ -7,18 +7,14 @@ $(document).ready(function() {
       success: function(data) { 
         var items = data.d.results; 
         var html = ""; 
-        var hasPopular = false;
-        var hasSustainable = false;
         for (var i = 0; i < items.length; i++) { 
           var category = items[i].Category.results.join(" ");
           var badgeHtml = "";
           if (category.indexOf("Popular") !== -1) { // Check if category includes Popular
-            badgeHtml += "<div class='hot-badge'></div>";
-            hasPopular = true;
+            badgeHtml += "<div class='hot-badge'><i class='fa-solid fa-fire-flame-curved'></i></div>";
           }
           if (category.indexOf("Sustainable") !== -1) { // Check if category includes Sustainable
-            badgeHtml += "<div class='sustainable-badge'></div>";
-            hasSustainable = true;
+            badgeHtml += "<div class='sustainability-badge'><i class='fa-solid fa-leaf'></i></div>";
           }
           html += "<div class='col-sm-6 col-md-4 col-lg-3 product-item' data-category='" + category + "' data-price='" + items[i].Price + "'>";
           html += "<div class='card mb-4'>" + badgeHtml;
@@ -28,14 +24,16 @@ $(document).ready(function() {
           html += "<p class='card-text card-description-text'>" + items[i].Description + "</p>"; 
           html += "<a href='' class='btn btn-danger' style='color: white;' role='button'>View Details</a>"; 
           html += "</div></div></div>"; 
+          
+          // Position the badges for this item
+          if (category.indexOf("Popular") !== -1 && category.indexOf("Sustainable") !== -1) {
+            $(".hot-badge:last").css("top", "20px");
+            $(".sustainability-badge:last").css("top", "60px");
+          } else {
+            $(".hot-badge:last, .sustainability-badge:last").css("top", "20px");
+          }
         } 
         $(".product-gallery").html(html);
-        if (hasPopular && hasSustainable) {
-          $(".hot-badge").css("top", "20px");
-          $(".sustainable-badge").css("top", "60px");
-        } else {
-          $(".hot-badge, .sustainable-badge").css("top", "20px");
-        }
       }, 
       error: function(error) { 
         console.log(JSON.stringify(error)); 
