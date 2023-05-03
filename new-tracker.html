@@ -1,8 +1,3 @@
-<!-- Bootstrap CSS -->
-<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
-
-<!-- Bootstrap JS -->
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/5.0.0-beta1/js/bootstrap.bundle.min.js" integrity="sha384-pzjw8f+ua7Kw1TIq0v8FqFjcJ6pajs/rfdfs3SO+kD4Ck5BdPtF+to8xMp9Mvc/l" crossorigin="anonymous"></script>
 <div class="container my-4">
     <div class="row">
       <div class="col-sm-12 col-md-2 text-center">
@@ -33,8 +28,9 @@
     </div>
     <div class="row mt-3">
       <div class="col-sm-12">
-        <div class="order-progress bg-light">
-          <div class="tracking-indicator bg-danger"></div>
+        <div class="order-progress bg-light position-relative">
+          <div class="tracking-indicator bg-danger position-absolute"></div>
+          <div class="tracking-line position-absolute"></div>
         </div>
       </div>
     </div>
@@ -56,12 +52,23 @@
     .order-progress {
       height: 5px;
       width: 100%;
+      position: relative;
     }
     
     .tracking-indicator {
       height: 100%;
       width: 0;
       transition: 500ms;
+      z-index: 2;
+    }
+    
+    .tracking-line {
+      height: 3px;
+      width: 100%;
+      top: 50%;
+      transform: translateY(-50%);
+      background-color: #ccc;
+      z-index: 1;
     }
     
     .tracker-step.active-track-step .tracker-step-label {
@@ -71,17 +78,5 @@
     .tracker-step.active-track-step {
       background-color: #E32739;
     }
-  </style>
-  
-      
-      .tracker-container:nth-of-type(2) span {
-        font-weight: 600;
-        color: #555;
-        text-align: center;
-        text-transform: capitalize;
-        font-size: 13px;
-        width: 80px;
-      }
-      
   </style>
   
