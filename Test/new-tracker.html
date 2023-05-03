@@ -39,6 +39,7 @@
     .tracker-step {
       width: 80px;
       height: 80px;
+      position: relative;
     }
     
     .tracker-step-label {
@@ -46,6 +47,9 @@
       color: #555;
       text-transform: capitalize;
       width: 80px;
+      position: absolute;
+      bottom: -25px;
+      text-align: center;
     }
     
     .order-progress {
@@ -63,11 +67,13 @@
     
     .tracking-line {
       height: 3px;
-      width: 100%;
+      width: calc(100% + 80px);
       top: 50%;
       transform: translateY(-50%);
       background-color: #ccc;
       z-index: 1;
+      margin-left: -40px;
+      margin-right: -40px;
     }
     
     .tracker-step.active-track-step .tracker-step-label {
@@ -96,6 +102,7 @@
       top: 50%;
       background-color: #ccc;
       z-index: 1;
+      border-left: 1px solid #ccc;
     }
     
     .col-sm-12:nth-child(2) .tracker-step::before {
@@ -104,10 +111,14 @@
     
     .col-sm-12:nth-child(3) .tracker-step::before {
       left: -80px;
+      border-left: none;
+      border-right: 1px solid #ccc;
     }
     
     .col-sm-12:nth-child(4) .tracker-step::before {
       right: -80px;
+      border-left: none;
+      border-right: 1px solid #ccc;
     }
     
     @media (min-width: 768px) {
@@ -129,19 +140,30 @@
         top: 50%;
         background-color: #ccc;
         z-index: 1;
-      }
-      
-      .col-md-2:nth-child(2) .tracker-step::before {
-        left: -40px;
-      }
-      
-      .col-md-2:nth-child(3) .tracker-step::before {
-        left: -80px;
-      }
-      
-      .col-md-2:nth-child(4) .tracker-step::before {
-        right: -80px;
-      }
-    }
-  </style>
-  
+        border-left: 1px solid #ccc;
+        }
+        .col-md-2:nth-child(2) .tracker-step::before {
+            left: -40px;
+          }
+          
+          .col-md-2:nth-child(3) .tracker-step::before {
+            left: -80px;
+            border-left: none;
+            border-right: 1px solid #ccc;
+          }
+          
+          .col-md-2:nth-child(4) .tracker-step::before {
+            right: -80px;
+            border-left: none;
+            border-right: 1px solid #ccc;
+          }
+          
+          .tracker-step-label {
+            bottom: -35px;
+          }
+          
+          .tracking-line {
+            margin-left: -40px;
+            margin-right: -40px;
+          }
+            
