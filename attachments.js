@@ -141,3 +141,63 @@ function displayAttachments(listId, listItemId) {
 $(document).ready(function() {
     displayAttachments(listId, listItemId);
 });
+
+document.addEventListener("DOMContentLoaded", function() {
+    var listItemId = GetUrlKeyValue("ID");
+    var listId = _spPageContextInfo.pageListId;
+    
+    function getItemDetails(listId, listItemId) {
+      var clientContext = new SP.ClientContext.get_current();
+      var list = clientContext.get_web().get_lists().getById(listId);
+      var listItem = list.getItemById(listItemId);
+      clientContext.load(listItem);
+      clientContext.executeQueryAsync(function() {
+        var title = listItem.get_item("Title");
+        var author = listItem.get_item("Author").get_lookupValue();
+        var created = listItem.get_item("Created");
+        var id = listItem.get_item("ID");
+        var status = listItem.get_item("Status");
+        var requestForX = listItem.get_item("Request_x0020_For");
+        var modified = listItem.get_item("Modified");
+        document.getElementById("customTitle").innerText = "Title: " + title;
+        document.getElementById("customAuthor").innerText = author;
+        document.getElementById("customAuthorAgain").innerText = author;
+        document.getElementById("customCreated").innerText = created.toLocaleString();;
+        document.getElementById("customId").innerText = "ESP" + id;
+        document.getElementById("customModified").innerText = modified.toLocaleString();;
+        document.getElementById("customStatus").innerText = status;
+        
+        // Add custom styling based on status
+        var trackerContainer = document.querySelector(".tracker-container");
+        switch (status) {
+          case "Not-Started":
+            trackerContainer.style.background = "linear-gradient(90deg,red 0%,#dfdfdf 25%)";
+            var trackStep0 = document.querySelector(".fa-solid.fa-list-check.track-step");
+            trackStep0.classList.add("active-track-step");
+            break;
+          case "In-Progress":
+            trackerContainer.style.background = "linear-gradient(90deg,red 50%,#dfdfdf 50%)";
+            var trackStep1 = document.querySelector(".fa-solid.fa-gears.track-step");
+            trackStep1.classList.add("active-track-step");
+            break;
+          case "Ordered":
+            trackerContainer.style.background = "linear-gradient(90deg,red 75%,#dfdfdf 50%)";
+            var trackStep2 = document.querySelector(".fa-solid.fa-truck-fast.track-step");
+            trackStep2.classList.add("active-track-step");
+            break;
+          case "Completed":
+            trackerContainer.style.background = "linear-gradient(90deg,red 100%,#dfdfdf 50%)";
+            var trackStep3 = document.querySelector(".fa-solid.fa-check-to-slot.track-step");
+            trackStep3.classList.add("active-track-step");
+            break;
+          default:
+            break;
+        }
+      }, function(sender, args) {
+        console.error("Error: " + args.get_message());
+      });
+    }
+    
+    getItemDetails(listId, listItemId);
+  });
+  
