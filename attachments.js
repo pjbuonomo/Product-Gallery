@@ -87,3 +87,57 @@ function displayAttachments(listId, listItemId) {
         }
     });
 }
+
+
+
+
+
+
+
+
+
+
+<div id="pdfSidebar" style="width: 20%; float: left; border-right: 1px solid #ccc; padding: 10px;"></div>
+<iframe id="pdfViewer" style="width: 80%; height: 500px; float: left; border: none;"></iframe>
+
+
+function displayAttachments(listId, listItemId) {
+    $.ajax({
+        url: _spPageContextInfo.webAbsoluteUrl + "/_api/web/lists(guid'" + listId + "')/items(" + listItemId + ")/AttachmentFiles",
+        type: "GET",
+        headers: {
+            "accept": "application/json;odata=verbose",
+        },
+        success: function (data) {
+            var attachmentsContainer = $("#pdfSidebar");
+            attachmentsContainer.empty();
+
+            if (data.d.results.length > 0) {
+                data.d.results.forEach(function (attachment) {
+                    var attachmentName = attachment.FileName;
+                    var attachmentUrl = attachment.ServerRelativeUrl;
+
+                    var attachmentLink = $('<a href="#" class="attachment-link">' + attachmentName + '</a><br>');
+                    attachmentLink.click(function (event) {
+                        event.preventDefault();
+                        $("#pdfViewer").attr("src", attachmentUrl);
+                    });
+
+                    attachmentsContainer.append(attachmentLink);
+                });
+
+                // Load the first attachment in the iframe
+                $("#pdfViewer").attr("src", data.d.results[0].ServerRelativeUrl);
+            } else {
+                attachmentsContainer.append("<p>No attachments found</p>");
+            }
+        },
+        error: function (xhr, textStatus, errorThrown) {
+            console.log("Error: " + xhr.responseText);
+        }
+    });
+}
+
+$(document).ready(function() {
+    displayAttachments(listId, listItemId);
+});
