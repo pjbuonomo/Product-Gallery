@@ -44,3 +44,25 @@ function displayAttachments(listId, listItemId) {
         }
     });
 }
+
+
+function displayAttachments(listId, listItemId) {
+    var requestUrl = _spPageContextInfo.webAbsoluteUrl + "/_api/web/lists(guid'" + listId + "')/items(" + listItemId + ")/AttachmentFiles";
+    $.ajax({
+        url: requestUrl,
+        type: "GET",
+        headers: { "accept": "application/json;odata=verbose" },
+        success: function(data) {
+            var attachmentsHtml = "";
+            for (var i = 0; i < data.d.results.length; i++) {
+                var attachment = data.d.results[i];
+                attachmentsHtml += '<a href="' + attachment.ServerRelativeUrl + '" target="_blank">' + attachment.FileName + '</a><br>';
+            }
+            document.getElementById("customAttachments").innerHTML = attachmentsHtml;
+        },
+        error: function(xhr, status, error) {
+            console.error("Error: " + xhr.status + " - " + xhr.statusText);
+        }
+    });
+}
+
