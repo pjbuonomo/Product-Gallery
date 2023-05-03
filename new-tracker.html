@@ -29,13 +29,12 @@
     <div class="row mt-3">
       <div class="col-sm-12">
         <div class="order-progress bg-light position-relative">
-          <div class="tracking-indicator bg-danger position-absolute"></div>
           <div class="tracking-line position-absolute"></div>
+          <div class="tracking-indicator bg-danger position-absolute"></div>
         </div>
       </div>
     </div>
   </div>
-  
   <style>
     .tracker-step {
       width: 80px;
@@ -77,6 +76,72 @@
     
     .tracker-step.active-track-step {
       background-color: #E32739;
+    }
+    
+    .col-sm-12:nth-child(1) .tracker-step {
+      margin-left: 40px;
+    }
+    
+    .col-sm-12:nth-child(5) .tracker-step {
+      margin-right: 40px;
+    }
+    
+    .col-sm-12:nth-child(2) .tracker-step::before,
+    .col-sm-12:nth-child(3) .tracker-step::before,
+    .col-sm-12:nth-child(4) .tracker-step::before {
+      content: "";
+      position: absolute;
+      height: 3px;
+      width: 100%;
+      top: 50%;
+      background-color: #ccc;
+      z-index: 1;
+    }
+    
+    .col-sm-12:nth-child(2) .tracker-step::before {
+      left: -40px;
+    }
+    
+    .col-sm-12:nth-child(3) .tracker-step::before {
+      left: -80px;
+    }
+    
+    .col-sm-12:nth-child(4) .tracker-step::before {
+      right: -80px;
+    }
+    
+    @media (min-width: 768px) {
+      .col-md-2:nth-child(1) .tracker-step {
+        margin-left: 0;
+      }
+      
+      .col-md-2:nth-child(5) .tracker-step {
+        margin-right: 0;
+      }
+      
+      .col-md-2:nth-child(2) .tracker-step::before,
+      .col-md-2:nth-child(3) .tracker-step::before,
+      .col-md-2:nth-child(4) .tracker-step::before {
+        content: "";
+        position: absolute;
+        height: 3px;
+        width: 100%;
+        top: 50%;
+        background-color: #ccc;
+        z-index: 1;
+      }
+      
+      .col-md-2:nth-child(2) .tracker-step::before {
+        left: -40px;
+      }
+      
+      .col-md-2:nth-child(3) .tracker-step::before {
+        left: -80px;
+      }
+      
+      .col-md-2:nth-child(4) .tracker-step::before {
+        right: -80px;
+      }
     }
   </style>
   
