@@ -1,0 +1,87 @@
+<!-- Bootstrap CSS -->
+<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+
+<!-- Bootstrap JS -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/5.0.0-beta1/js/bootstrap.bundle.min.js" integrity="sha384-pzjw8f+ua7Kw1TIq0v8FqFjcJ6pajs/rfdfs3SO+kD4Ck5BdPtF+to8xMp9Mvc/l" crossorigin="anonymous"></script>
+<div class="container my-4">
+    <div class="row">
+      <div class="col-sm-12 col-md-2 text-center">
+        <div class="tracker-step bg-white shadow-sm p-3 rounded-circle">
+          <div class="tracker-step-label font-weight-bold">Request<br>Submitted</div>
+        </div>
+      </div>
+      <div class="col-sm-12 col-md-2 text-center">
+        <div class="tracker-step bg-white shadow-sm p-3 rounded-circle">
+          <div class="tracker-step-label font-weight-bold">Agent<br>Assigned</div>
+        </div>
+      </div>
+      <div class="col-sm-12 col-md-2 text-center">
+        <div class="tracker-step bg-white shadow-sm p-3 rounded-circle">
+          <div class="tracker-step-label font-weight-bold">In-Progress</div>
+        </div>
+      </div>
+      <div class="col-sm-12 col-md-2 text-center">
+        <div class="tracker-step bg-white shadow-sm p-3 rounded-circle">
+          <div class="tracker-step-label font-weight-bold">Ordered &<br>En Route</div>
+        </div>
+      </div>
+      <div class="col-sm-12 col-md-2 text-center">
+        <div class="tracker-step bg-white shadow-sm p-3 rounded-circle">
+          <div class="tracker-step-label font-weight-bold">Order<br>Completed</div>
+        </div>
+      </div>
+    </div>
+    <div class="row mt-3">
+      <div class="col-sm-12">
+        <div class="order-progress bg-light">
+          <div class="tracking-indicator bg-danger"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <style>
+    .tracker-step {
+      width: 80px;
+      height: 80px;
+    }
+    
+    .tracker-step-label {
+      font-size: 13px;
+      color: #555;
+      text-transform: capitalize;
+      width: 80px;
+    }
+    
+    .order-progress {
+      height: 5px;
+      width: 100%;
+    }
+    
+    .tracking-indicator {
+      height: 100%;
+      width: 0;
+      transition: 500ms;
+    }
+    
+    .tracker-step.active-track-step .tracker-step-label {
+      color: #fff;
+    }
+    
+    .tracker-step.active-track-step {
+      background-color: #E32739;
+    }
+  </style>
+  
+      
+      .tracker-container:nth-of-type(2) span {
+        font-weight: 600;
+        color: #555;
+        text-align: center;
+        text-transform: capitalize;
+        font-size: 13px;
+        width: 80px;
+      }
+      
+  </style>
+  
