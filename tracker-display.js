@@ -51,3 +51,50 @@ document.addEventListener("DOMContentLoaded", function () {
     getItemDetails(listId, listItemId);
   });
   
+
+
+
+
+
+
+  function animateGradient(progressPercentage) {
+    orderProgress.style.background = `linear-gradient(90deg, red ${progressPercentage}%, #dfdfdf 0%)`;
+  }
+  
+  if (status === 'Not-Started') {
+    animateGradient(0);
+    stepRequestSubmitted.classList.add('active-track-step');
+    statusBadge.classList.add('badge-Not-Started');
+    console.log("NS True");
+  } else if (assignedToX !== 'undefined') {
+    animateGradient(25);
+    stepRequestSubmitted.classList.add('active-track-step');
+    stepAssignedTo.classList.add('active-track-step');
+    console.log("IP True");
+  } else if (status === 'In-Progress') {
+    animateGradient(50);
+    stepRequestSubmitted.classList.add('active-track-step');
+    stepAssignedTo.classList.add('active-track-step');
+    stepInProgress.classList.add('active-track-step');
+    statusBadge.classList.add('badge-In-Progress');
+    console.log("IP2 True");
+  } else if (status === 'Ordered') {
+    animateGradient(75);
+    stepRequestSubmitted.classList.add('active-track-step');
+    stepAssignedTo.classList.add('active-track-step');
+    stepInProgress.classList.add('active-track-step');
+    stepOrdered.classList.add('active-track-step');
+    statusBadge.classList.add('badge-Ordered');
+    console.log("O True");
+  } else if (status === 'Completed') {
+    animateGradient(100);
+    stepRequestSubmitted.classList.add('active-track-step');
+    stepAssignedTo.classList.add('active-track-step');
+    stepInProgress.classList.add('active-track-step');
+    stepOrdered.classList.add('active-track-step');
+    stepCompleted.classList.add('active-track-step');
+    statusBadge.classList.add('badge-Completed');
+    console.log("C True");
+  }
+
+  
