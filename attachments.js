@@ -200,4 +200,53 @@ document.addEventListener("DOMContentLoaded", function() {
     
     getItemDetails(listId, listItemId);
   });
+
   
+
+
+
+
+
+
+
+
+
+
+  function updateStatusDisplay(status) {
+    var progressValue;
+    var activeStep;
+    
+    switch (status) {
+      case "Not-Started":
+        progressValue = "25%";
+        activeStep = 0;
+        break;
+      case "In-Progress":
+        progressValue = "50%";
+        activeStep = 1;
+        break;
+      case "Ordered":
+        progressValue = "75%";
+        activeStep = 2;
+        break;
+      case "Completed":
+        progressValue = "100%";
+        activeStep = 3;
+        break;
+      default:
+        progressValue = "0%";
+        activeStep = -1;
+    }
+  
+    // Update the progress bar
+    $(".tracking-indicator").css("background", `linear-gradient(90deg, red ${progressValue}, #dfdfdf 50%)`);
+  
+    // Add the active-track-step class to the current step
+    $(".track-step").each(function(index) {
+      if (index === activeStep) {
+        $(this).addClass("active-track-step");
+      } else {
+        $(this).removeClass("active-track-step");
+      }
+    });
+  }
