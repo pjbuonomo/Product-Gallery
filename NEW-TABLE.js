@@ -28,13 +28,13 @@ function successFunction(data) {
             dom: 'QBlfrtipP', 
             pageLength: 10, 
             columnDefs: [ 
-                { width: "0.5%", targets: [0], }, 
-                { width: "3.5%", targets: [1], }, 
-                { width: "5.0%", targets: [2], }, 
-                { width: "5%", targets: [3], }, 
-                { width: "3%", targets: [4], }, 
-                { width: "2.5%", targets: [5], }, 
-                { width: "0.50%", targets: [6], }, 
+                { orderable: false, className: 'select-checkbox', targets: 0 },
+                { width: "3.5%", targets: [1], },
+                { width: "5.0%", targets: [2], },
+                { width: "5%", targets: [3], },
+                { width: "3%", targets: [4], },
+                { width: "2.5%", targets: [5], },
+                { width: "0.50%", targets: [6], },
             ], 
             aaData: data.d.results,
             select: {
@@ -98,3 +98,4 @@ function successFunction(data) {
 }
 
 
+{ mData: null, defaultContent: '' },
