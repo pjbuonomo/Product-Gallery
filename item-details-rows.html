@@ -26,7 +26,7 @@
     <div id="form-container">
       <div class="row">
         <div class="col">
-          <input type="text" class="form-control" name="item_description[]">
+          <textarea class="form-control" name="item_description[]" rows="3"></textarea>
         </div>
         <div class="col">
           <input type="number" class="form-control" name="quantity[]">
@@ -57,7 +57,7 @@
       newRow.className = "row";
       newRow.innerHTML = `
         <div class="col">
-          <input type="text" class="form-control" name="item_description[]">
+          <textarea class="form-control" name="item_description[]" rows="3"></textarea>
         </div>
         <div class="col">
           <input type="number" class="form-control" name="quantity[]">
@@ -84,7 +84,7 @@
       var formRows = document.querySelectorAll("#form-container .row");
       var orderSummary = "";
       for (var i = 0; i < formRows.length; i++) {
-        var description = formRows[i].querySelector("input[name='item_description[]']").value;
+        var description = formRows[i].querySelector("textarea[name='item_description[]']").value;
         var quantity = formRows[i].querySelector("input[name='quantity[]']").value;
         var unitPrice = formRows[i].querySelector("input[name='unit_price[]']").value;
 
@@ -97,11 +97,10 @@
     }
 
     // Listen for changes in the form fields and update the order summary
-    var formFields = document.querySelectorAll("#form-container input");
+    var formFields = document.querySelectorAll("#form-container input, #form-container textarea");
     for (var i = 0; i < formFields.length; i++) {
       formFields[i].addEventListener("input", updateOrderSummary);
     }
   </script>
 </body>
 </html>
-
