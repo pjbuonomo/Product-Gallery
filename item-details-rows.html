@@ -90,7 +90,11 @@
 
         orderSummary += `- Description: ${description}\n`;
         orderSummary += `  Quantity: ${quantity}\n`;
-        orderSummary += `  Unit Price: ${unitPrice}\n\n`;
+        orderSummary += `  Unit Price: ${unitPrice}\n`;
+        if (link) {
+          orderSummary += `  Link: <a href="${link}" target="_blank">link</a>\n`;
+        }
+        orderSummary += "\n";
       }
 
       document.getElementById("order-summary").value = orderSummary;
@@ -104,3 +108,4 @@
   </script>
 </body>
 </html>
+
