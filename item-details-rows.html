@@ -209,4 +209,93 @@
   </script>
 
 
-  
+  <div class="container">
+    <div class="row">
+        <div class="col-6">
+            <h6 class="fw-bold">Item Description<sup>*</sup></h6>
+        </div>
+        <div class="col-2">
+            <h6 class="fw-bold">Qty.<sup>*</sup></h6>
+        </div>
+        <div class="col-3">
+            <h6 class="fw-bold">Link</h6>
+        </div>
+        <div class="col-1">
+            <h6 class="fw-bold"></h6>
+        </div>
+    </div>
+    <div id="form-container">
+        <div class="row">
+            <div class="col-6">
+                <textarea class="form-control" name="item_description[]" rows="3"></textarea>
+            </div>
+            <div class="col-2">
+                <input type="number" class="form-control" name="quantity[]">
+            </div>
+            <div class="col-3">
+                <input type="text" class="form-control" name="link[]">
+            </div>
+            <div class="col-1">
+                <a class="btn btn-danger remove-btn" onclick="removeRow(this)"><i class="fa-solid fa-trash-can"></i></a>
+            </div>
+        </div>
+    </div>
+    <a class="btn btn-primary" onclick="addRow()">Add Row</a>
+    <div class="mt-4">
+        <h3>Order Summary</h3>
+        <textarea id="order-summary" class="form-control" rows="5" readonly></textarea>
+    </div>
+</div>
+<script>
+    function addRow() {
+        var formContainer = document.getElementById("form-container");
+        var newRow = document.createElement("div");
+        newRow.className = "row";
+        newRow.innerHTML = '<div class="col-6"> <textarea class="form-control" name="item_description[]" rows="3"></textarea> </div> <div class="col-2"> <input type="number" class="form-control" name="quantity[]"> </div> <div class="col-3"> <input type="text" class="form-control" name="link[]"> </div> <div class="col-1"> <a class="btn btn-danger remove-btn" onclick="removeRow(this)"><i class="fa-solid fa-trash-can"></i></a> </div>';
+        formContainer.appendChild(newRow);
+        // Listen for changes in the new form fields and update the order summary
+        var formFields = newRow.querySelectorAll("input, textarea");
+        for (var i = 0; i < formFields.length; i++) {
+            formFields[i].addEventListener("input", updateOrderSummary);
+        }
+    }
+
+    function removeRow(button) {
+        var row = button.parentNode.parentNode;
+        row.parentNode.removeChild(row);
+        updateOrderSummary(); // update the order summary when a row is removed
+    }
+
+    function updateOrderSummary() {
+        var formRows = document.querySelectorAll("#form-container .row");
+        var orderSummary = "";
+        for (var i = 0; i < formRows.length; i++) {
+            var itemNumber = i + 1;
+            var description = formRows[i].querySelector("textarea[name='item_description[]']").value;
+            var quantity = formRows[i].querySelector("input[name='quantity[]']").value;
+            var link = formRows[i].querySelector("input[name='link[]']").value;
+
+            if (description) {
+                orderSummary += `[#${itemNumber}] ${description},`;
+            }
+            if (quantity) {
+                orderSummary += ` QTY: ${quantity},`;
+            }
+            if (link) {
+                orderSummary += ` Link: (${link})\n\n`;
+            }
+        }
+        document.getElementById("order-summary").value = orderSummary;
+    }
+
+    // Listen for changes in the form fields and update the order summary
+    var formFields = document.querySelectorAll("#form-container input, #form-container textarea");
+    for (var i = 0; i < formFields.length; i++) {
+        formFields[i].addEventListener("input", updateOrderSummary);
+    }
+</script>
+
+
+
+
+
