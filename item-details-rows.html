@@ -81,24 +81,25 @@
     }
 
     function updateOrderSummary() {
-      var formRows = document.querySelectorAll("#form-container .row");
-      var orderSummary = "";
-      for (var i = 0; i < formRows.length; i++) {
-        var description = formRows[i].querySelector("textarea[name='item_description[]']").value;
-        var quantity = formRows[i].querySelector("input[name='quantity[]']").value;
-        var unitPrice = formRows[i].querySelector("input[name='unit_price[]']").value;
-
-        orderSummary += `- Description: ${description}\n`;
-        orderSummary += `  Quantity: ${quantity}\n`;
-        orderSummary += `  Unit Price: ${unitPrice}\n`;
-        if (link) {
-          orderSummary += `  Link: <a href="${link}" target="_blank">link</a>\n`;
+        var formRows = document.querySelectorAll("#form-container .row");
+        var orderSummary = "";
+        for (var i = 0; i < formRows.length; i++) {
+          var description = formRows[i].querySelector("textarea[name='item_description[]']").value;
+          var quantity = formRows[i].querySelector("input[name='quantity[]']").value;
+          var unitPrice = formRows[i].querySelector("input[name='unit_price[]']").value;
+          var link = formRows[i].querySelector("input[name='link[]']").value;
+      
+          orderSummary += `- Description: ${description}\n`;
+          orderSummary += `  Quantity: ${quantity}\n`;
+          orderSummary += `  Unit Price: ${unitPrice}\n`;
+          if (link) {
+            orderSummary += `  Link: <a href="${link}" target="_blank">link</a>\n`;
+          }
+          orderSummary += "\n";
         }
-        orderSummary += "\n";
+      
+        document.getElementById("order-summary").innerHTML = orderSummary;
       }
-
-      document.getElementById("order-summary").value = orderSummary;
-    }
 
     // Listen for changes in the form fields and update the order summary
     var formFields = document.querySelectorAll("#form-container input, #form-container textarea");
@@ -108,4 +109,3 @@
   </script>
 </body>
 </html>
-
