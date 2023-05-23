@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Dynamic Form Example</title>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+</head>
+<body>
+  <div class="container">
+    <div class="row">
+      <div class="col">
+        <h3>Item Description</h3>
+      </div>
+      <div class="col">
+        <h3>Quantity</h3>
+      </div>
+      <div class="col">
+        <h3>Unit Price</h3>
+      </div>
+      <div class="col">
+        <h3>Link</h3>
+      </div>
+      <div class="col">
+        <h3>Actions</h3>
+      </div>
+    </div>
+    <div id="form-container">
+      <div class="row">
+        <div class="col">
+          <input type="text" class="form-control" name="item_description[]">
+        </div>
+        <div class="col">
+          <input type="number" class="form-control" name="quantity[]">
+        </div>
+        <div class="col">
+          <input type="number" step="0.01" class="form-control" name="unit_price[]">
+        </div>
+        <div class="col">
+          <input type="text" class="form-control" name="link[]">
+        </div>
+        <div class="col">
+          <button class="btn btn-danger remove-btn" onclick="removeRow(this)">Remove</button>
+        </div>
+      </div>
+    </div>
+    <button class="btn btn-primary" onclick="addRow()">Add Row</button>
+
+    <div class="mt-4">
+      <h3>Order Summary</h3>
+      <textarea id="order-summary" class="form-control" rows="5" readonly></textarea>
+    </div>
+  </div>
+
+  <script>
+    function addRow() {
+      var formContainer = document.getElementById("form-container");
+      var newRow = document.createElement("div");
+      newRow.className = "row";
+      newRow.innerHTML = `
+        <div class="col">
+          <input type="text" class="form-control" name="item_description[]">
+        </div>
+        <div class="col">
+          <input type="number" class="form-control" name="quantity[]">
+        </div>
+        <div class="col">
+          <input type="number" step="0.01" class="form-control" name="unit_price[]">
+        </div>
+        <div class="col">
+          <input type="text" class="form-control" name="link[]">
+        </div>
+        <div class="col">
+          <button class="btn btn-danger remove-btn" onclick="removeRow(this)">Remove</button>
+        </div>
+      `;
+      formContainer.appendChild(newRow);
+    }
+
+    function removeRow(button) {
+      var row = button.parentNode.parentNode;
+      row.parentNode.removeChild(row);
+    }
+
+    function updateOrderSummary() {
+      var formRows = document.querySelectorAll("#form-container .row");
+      var orderSummary = "";
+      for (var i = 0; i < formRows.length; i++) {
+        var description = formRows[i].querySelector("input[name='item_description[]']").value;
+        var quantity = formRows[i].querySelector("input[name='quantity[]']").value;
+        var unitPrice = formRows[i].querySelector("input[name='unit_price[]']").value;
+
+        orderSummary += `- Description: ${description}\n`;
+        orderSummary += `  Quantity: ${quantity}\n`;
+        orderSummary += `  Unit Price: ${unitPrice}\n\n`;
+      }
+
+      document.getElementById("order-summary").value = orderSummary;
+    }
+
+    // Listen for changes in the form fields and update the order summary
+    var formFields = document.querySelectorAll("#form-container input");
+    for (var i = 0; i < formFields.length; i++) {
+      formFields[i].addEventListener("input", updateOrderSummary);
+    }
+  </script>
+</body>
+</html>
+
