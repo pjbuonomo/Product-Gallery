@@ -346,3 +346,23 @@ function openOffcanvas(itemId) {
     }
   });
 }
+// Loop through each span tag with class "dataQuickLocate"
+$('span.dataQuickLocate').each(function() {
+    // Get the internal name from the data attribute
+    var internalName = $(this).data('internalname');
+
+    // Create a new input element
+    var input = document.createElement('input');
+
+    // Set input type as text
+    input.type = 'text';
+
+    // Set input class as form-control
+    input.className = 'form-control';
+
+    // Set input value as the data from the specified field
+    input.value = data[internalName]; // Assume "data" is the object containing your SharePoint data
+
+    // Append the input element to the span
+    $(this).append(input);
+});
