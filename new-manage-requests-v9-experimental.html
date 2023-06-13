@@ -254,23 +254,48 @@ $(document).on('click', '.view-details-button', function() {
       });
   }
   function updateListItem(itemId, itemData) {
-    // Connect to the SharePoint site using PnP context
-    const spContext = pnp.sp.createBatch();
-  
+  // Connect to the SharePoint site using PnP context
+  const spContext = pnp.sp.createBatch();
+
+  // Get the specific list item by ID
+  const listItem = spContext.web.lists.getByTitle('PurchaseRequests').items.getById(itemId);
+
+  // Update the item with the new field values
+  spContext.web.lists.getByTitle('PurchaseRequests').items.getById(itemId).update(itemData);
+
+  // Execute the batch update
+  spContext.execute()
+    .then(() => {
+      console.log("Item updated successfully");
+      // Optionally, perform any additional actions after successful update
+    })
+    .catch((error) => {
+      console.log("Error updating item: " + error);
+    });
+}
+function updateListItem(itemId, itemData) {
     // Get the specific list item by ID
-    const listItem = spContext.web.lists.getByTitle('PurchaseRequests').items.getById(itemId);
-  
+    var listItem = pnp.sp.web.lists.getByTitle('PurchaseRequests').items.getById(itemId);
+    
     // Update the item with the new field values
-    spContext.web.lists.getByTitle('PurchaseRequests').items.getById(itemId).update(itemData);
-  
-    // Execute the batch update
-    spContext.execute()
-      .then(() => {
-        console.log("Item updated successfully");
-        // Optionally, perform any additional actions after successful update
-      })
-      .catch((error) => {
-        console.log("Error updating item: " + error);
-      });
-  }
-  
+    listItem.update(itemData)
+        .then(() => {
+            console.log("Item updated successfully");
+            // Optionally, perform any additional actions after successful update
+        })
+        .catch((error) => {
+            console.log("Error updating item: " + error);
+        });
+}
+
+
+
+
+
+
+
+
+
+
+
+
