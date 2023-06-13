@@ -1,0 +1,112 @@
+$(document).on('click', '.view-details-button', function() {
+    var itemId = $(this).data('id');
+    openOffcanvas(itemId);
+  });
+  
+  function openOffcanvas(itemId) {
+    // Fetch item details using SharePoint REST API
+    var apiUrl = _spPageContextInfo.webAbsoluteUrl + "/_api/web/lists/getbytitle('PurchaseRequests')/items(" + itemId + ")";
+    
+    $.ajax({
+      url: apiUrl,
+      type: "GET",
+      headers: {
+        "Accept": "application/json;odata=verbose"
+      },
+      success: function(data) {
+        var itemData = data.d; // Retrieve the item data from the response
+        
+        var offcanvasBody = '';
+        offcanvasBody += '<div class="section">';
+    offcanvasBody += '<h4><i class="fa fa-list"></i> General Information</h4>';
+    offcanvasBody += '<div class="row px-2 pb-2">';
+    offcanvasBody += '<div class="col-md-6">';
+    offcanvasBody += '<div class="quick-view-data">';
+    offcanvasBody += '<span class="requestor-name">Requestor Name:<sup>*</sup></span><span class="quick-view-data">' + itemData.Request_x0020_For + '</span>';
+    offcanvasBody += '</div>';
+    offcanvasBody += '<div class="quick-view-data">';
+    offcanvasBody += '<span class="email">Email:<sup>*</sup></span><span class="quick-view-data">' + itemData.Email + '</span>';
+    offcanvasBody += '</div>';
+    offcanvasBody += '<div class="quick-view-data">';
+    offcanvasBody += '<span class="department">Department:<sup>*</sup></span><span class="quick-view-data">' + itemData.Department + '</span>';
+    offcanvasBody += '</div>';
+    offcanvasBody += '</div>';
+    offcanvasBody += '<div class="col-md-6">';
+    offcanvasBody += '<div class="quick-view-data">';
+    offcanvasBody += '<span class="dier-code">DIER Code:<sup>*</sup></span><span class="quick-view-data">' + itemData.DIER_x0020_Code + '</span>';
+    offcanvasBody += '</div>';
+    offcanvasBody += '<div class="quick-view-data">';
+    offcanvasBody += '<span class="project-code">Project Code:</span><span class="quick-view-data">' + itemData.Project_x0020_Code + '</span>';
+    offcanvasBody += '</div>';
+    offcanvasBody += '<div class="quick-view-data">';
+    offcanvasBody += '<span class="starting-manager">Starting Manager:<sup>*</sup></span><span class="quick-view-data">' + itemData.Comment + '</span>';
+    offcanvasBody += '</div>';
+    offcanvasBody += '</div>';
+    offcanvasBody += '</div>';
+    offcanvasBody += '</div>';
+    offcanvasBody += '<div class="section">';
+    offcanvasBody += '<h4><i class="fa fa-location-arrow"></i> Shipping & Location</h4>';
+    offcanvasBody += '<div class="row px-2 pb-2">';
+    offcanvasBody += '<div class="col-md-6">';
+    offcanvasBody += '<div class="quick-view-data">';
+    offcanvasBody += '<span class="ship-to-location">Ship To:<sup>*</sup></span><span class="quick-view-data">' + itemData.Ship_x0020_To + '</span>';
+    offcanvasBody += '</div>';
+    offcanvasBody += '</div>';
+    offcanvasBody += '<div class="col-md-6">';
+    offcanvasBody += '<div class="quick-view-data">';
+    offcanvasBody += '<span class="attention-to">Attention To:<sup>*</sup></span><span class="quick-view-data">' + itemData.Attention_x0020_To + '</span>';
+    offcanvasBody += '</div>';
+    offcanvasBody += '</div>';
+    offcanvasBody += '</div>';
+    offcanvasBody += '</div>';
+        
+        // Set the offcanvas body HTML
+        $('.offcanvas-body').html(offcanvasBody);
+  
+        // Open the offcanvas
+        $('.offcanvas').offcanvas('show');
+      },
+      error: function(error) {
+        console.log("Error retrieving item details: " + JSON.stringify(error));
+      }
+    });
+  }
+  
+  
+  <div class="offcanvas offcanvas-end" tabindex="-1" id="detailsOffcanvas" aria-labelledby="detailsOffcanvasLabel">
+    <div class="offcanvas-header">
+      <h5 class="offcanvas-title" id="detailsOffcanvasLabel">Item Details</h5>
+      <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+    </div>
+    <div class="offcanvas-body">
+      <!-- Item details will be populated here -->
+    </div>
+  </div>
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
