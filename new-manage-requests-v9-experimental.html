@@ -236,3 +236,20 @@ $(document).on('click', '.view-details-button', function() {
         console.log("Error updating item: " + error);
       });
   }  
+  function updateListItem(itemId, itemData) {
+    // Connect to the SharePoint site using PnP context
+    const spContext = new $pnp.SPContext(_spPageContextInfo.webAbsoluteUrl);
+    
+    // Get the specific list item by ID
+    const listItem = spContext.lists.getByTitle('PurchaseRequests').items.getById(itemId);
+    
+    // Update the item with the new field values
+    listItem.update(itemData)
+      .then(() => {
+        console.log("Item updated successfully");
+        // Optionally, perform any additional actions after successful update
+      })
+      .catch((error) => {
+        console.log("Error updating item: " + error);
+      });
+  }
