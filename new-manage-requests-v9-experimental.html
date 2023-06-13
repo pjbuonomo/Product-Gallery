@@ -109,4 +109,118 @@ $(document).on('click', '.view-details-button', function() {
 
 
 
+  function openOffcanvas(itemId) {
+    // Fetch item details using SharePoint REST API
+    var apiUrl = _spPageContextInfo.webAbsoluteUrl + "/_api/web/lists/getbytitle('PurchaseRequests')/items(" + itemId + ")";
+    
+    $.ajax({
+      url: apiUrl,
+      type: "GET",
+      headers: {
+        "Accept": "application/json;odata=verbose"
+      },
+      success: function(data) {
+        var itemData = data.d; // Retrieve the item data from the response
+        
+        var offcanvasBody = '';
+        offcanvasBody += '<div class="section">';
+        offcanvasBody += '<h4><i class="fa fa-list"></i> General Information</h4>';
+        offcanvasBody += '<div class="row px-2 pb-2">';
+        offcanvasBody += '<div class="col-md-6">';
+        offcanvasBody += '<div class="quick-view-data">';
+        offcanvasBody += '<label class="requestor-name">Requestor Name:<sup>*</sup></label>';
+        offcanvasBody += '<input type="text" class="form-control" value="' + itemData.Request_x0020_For + '">';
+        offcanvasBody += '</div>';
+        offcanvasBody += '<div class="quick-view-data">';
+        offcanvasBody += '<label class="email">Email:<sup>*</sup></label>';
+        offcanvasBody += '<input type="text" class="form-control" value="' + itemData.Email + '">';
+        offcanvasBody += '</div>';
+        offcanvasBody += '<div class="quick-view-data">';
+        offcanvasBody += '<label class="department">Department:<sup>*</sup></label>';
+        offcanvasBody += '<input type="text" class="form-control" value="' + itemData.Department + '">';
+        offcanvasBody += '</div>';
+        offcanvasBody += '</div>';
+        offcanvasBody += '<div class="col-md-6">';
+        offcanvasBody += '<div class="quick-view-data">';
+        offcanvasBody += '<label class="dier-code">DIER Code:<sup>*</sup></label>';
+        offcanvasBody += '<input type="text" class="form-control" value="' + itemData.DIER_x0020_Code + '">';
+        offcanvasBody += '</div>';
+        offcanvasBody += '<div class="quick-view-data">';
+        offcanvasBody += '<label class="project-code">Project Code:</label>';
+        offcanvasBody += '<input type="text" class="form-control" value="' + itemData.Project_x0020_Code + '">';
+        offcanvasBody += '</div>';
+        offcanvasBody += '<div class="quick-view-data">';
+        offcanvasBody += '<label class="starting-manager">Starting Manager:<sup>*</sup></label>';
+        offcanvasBody += '<input type="text" class="form-control" value="' + itemData.Comment + '">';
+        offcanvasBody += '</div>';
+        offcanvasBody += '</div>';
+        offcanvasBody += '</div>';
+        offcanvasBody += '</div>';
+  
+        // Save button
+        offcanvasBody += '<div class="section">';
+        offcanvasBody += '<button type="button" class="btn btn-primary save-button">Save</button>';
+        offcanvasBody += '</div>';
+        
+        // Set the offcanvas body HTML
+        $('.offcanvas-body').html(offcanvasBody);
+  
+        // Open the offcanvas
+        $('.offcanvas').offcanvas('show');
+  
+        // Save button click event handler
+        $('.save-button').click(function() {
+          var updatedData = {
+            Request_x0020_For: $('.requestor-name input').val(),
+            Email: $('.email input').val(),
+            Department: $('.department input').val(),
+            DIER_x0020_Code: $('.dier-code input').val(),
+            Project_x0020_Code: $('.project-code input').val(),
+            Comment: $('.starting-manager input').val()
+          };
+          
+          // Send update request to update the SharePoint list item
+          updateListItem(itemId, updatedData);
+        });
+      },
+      error: function(error) {
+        console.log("Error retrieving item details: " + JSON.stringify(error));
+      }
+    });
+  }
+  function updateListItem(itemId, itemData) {
+    // Construct the endpoint URL for updating the SharePoint list item
+    var apiUrl = _spPageContextInfo.webAbsoluteUrl + "/_api/web/lists/getbytitle('PurchaseRequests')/items(" + itemId + ")";
+    
+    // Prepare the data to be sent in the request body
+    var requestData = {
+      __metadata: { type: "SP.Data.PurchaseRequestsListItem" }, // Replace with the actual list item entity type name
+      // Map each field to its updated value
+      Request_x0020_For: itemData.Request_x0020_For,
+      Email: itemData.Email,
+      Department: itemData.Department,
+      DIER_x0020_Code: itemData.DIER_x0020_Code,
+      Project_x0020_Code: itemData.Project_x0020_Code,
+      Comment: itemData.Comment
+    };
+    
+    $.ajax({
+      url: apiUrl,
+      type: "POST",
+      contentType: "application/json;odata=verbose",
+      data: JSON.stringify(requestData),
+      headers: {
+        "Accept": "application/json;odata=verbose",
+        "X-HTTP-Method": "MERGE",
+        "If-Match": "*"
+      },
+      success: function(data) {
+        console.log("Item updated successfully");
+        // Optionally, perform any additional actions after successful update
+      },
+      error: function(error) {
+        console.log("Error updating item: " + JSON.stringify(error));
+      }
+    });
+  }
   
