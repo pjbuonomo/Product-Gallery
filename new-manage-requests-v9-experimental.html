@@ -223,4 +223,16 @@ $(document).on('click', '.view-details-button', function() {
       }
     });
   }
-  
+  function updateListItem(itemId, itemData) {
+    const spContext = pnp.sp.createWeb(_spPageContextInfo.webAbsoluteUrl);
+    
+    const listItem = spContext.lists.getByTitle('PurchaseRequests').items.getById(itemId);
+    
+    listItem.update(itemData)
+      .then(() => {
+        console.log("Item updated successfully");
+      })
+      .catch((error) => {
+        console.log("Error updating item: " + error);
+      });
+  }  
