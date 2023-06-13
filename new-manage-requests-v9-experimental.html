@@ -399,3 +399,57 @@ $(document).on('click', '.save-button', function() {
 
 
 
+function openOffcanvas(itemData) {
+    console.log(itemData + "outside test");
+    $('span.dataQuickLocate').each(function () {
+        var internalName = $(this).data('internalname');
+        var input = document.createElement('input');
+        input.type = 'text';
+        input.className = 'form-control';
+        input.value = itemData[internalName];
+        $(this).append(input);
+    });
+
+    // Add a save button to the offcanvas header
+    var saveButton = $('<button type="button" class="btn btn-primary">Save</button>');
+    $('.offcanvas-header').append(saveButton);
+
+    // Attach click event handler to the save button
+    saveButton.on('click', function () {
+        updateListItem(itemData.ID, collectItemData());
+    });
+
+    $('.offcanvas').offcanvas('show');
+}
+function collectItemData() {
+    var itemData = {};
+    $('span.dataQuickLocate input').each(function () {
+        var internalName = $(this).parent().data('internalname');
+        var value = $(this).val();
+        itemData[internalName] = value;
+    });
+    return itemData;
+}
+function updateListItem(itemId, itemData) {
+    var listName = "PurchaseRequests";
+    var url = _spPageContextInfo.webAbsoluteUrl + "/_api/web/lists/getbytitle('" + listName + "')/items(" + itemId + ")";
+    $.ajax({
+        url: url,
+        type: "POST",
+        contentType: "application/json;odata=verbose",
+        data: JSON.stringify(itemData),
+        headers: {
+            "Accept": "application/json;odata=verbose",
+            "X-HTTP-Method": "MERGE",
+            "If-Match": "*"
+        },
+        success: function (data) {
+            console.log("Item updated successfully");
+            console.log(data);
+            // Optionally, perform any additional actions after successful update
+        },
+        error: function (data) {
+            console.log("Error updating item: " + data);
+        }
+    });
+}
