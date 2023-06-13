@@ -453,3 +453,49 @@ function updateListItem(itemId, itemData) {
         }
     });
 }
+const siteUrl = "https://sp.bbh.com/sites/ESPurchasing";
+const groupId = 7;
+
+function retrieveGroupMembers() {
+  const endpointUrl = `${siteUrl}/_api/web/sitegroups(${groupId})/users`;
+
+  // Make a GET request to the SharePoint API
+  fetch(endpointUrl, {
+    headers: {
+      Accept: "application/json;odata=verbose",
+    },
+  })
+    .then(response => response.json())
+    .then(data => {
+      // Process the response and extract member details
+      const members = data.d.results.map(member => {
+        return {
+          name: member.Title,
+          email: member.Email,
+          loginName: member.LoginName,
+        };
+      });
+
+      // Do something with the members
+      console.log(members);
+    })
+    .catch(error => {
+      console.log("Error retrieving group members:", error);
+    });
+}
+
+// Call the function to retrieve group members
+retrieveGroupMembers();
+
+
+
+
+
+
+
+
+
+
+
+
+
