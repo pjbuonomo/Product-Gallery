@@ -366,3 +366,36 @@ $('span.dataQuickLocate').each(function() {
     // Append the input element to the span
     $(this).append(input);
 });
+$(document).on('click', '.save-button', function() {
+    var itemId = $(this).data('id'); // The ID of the item you want to update
+    var newValue = $('.form-control').val(); // The new value from the form control box
+
+    $.ajax({
+        url: "https://<your SharePoint site url>/_api/web/lists/getbytitle('<your list name>')/items(" + itemId + ")",
+        method: "POST",
+        data: JSON.stringify({
+            '__metadata': { 'type': 'SP.Data.<your list name>ListItem' }, // Replace <your list name> with the name of your list
+            'Title': newValue // Replace 'Title' with the internal name of the field you want to update
+        }),
+        headers: { 
+            "Accept": "application/json;odata=verbose",
+            "Content-Type": "application/json;odata=verbose",
+            "X-RequestDigest": $("#__REQUESTDIGEST").val(), // SharePoint Form Digest Value
+            "IF-MATCH": "*", // If you want to overwrite any changes that another user has made since you last fetched the item
+            "X-HTTP-Method": "MERGE" // Use MERGE to update only the properties you specify, or PUT to replace the entire entity
+        },
+        success: function (data) {
+            console.log('Item updated successfully');
+        },
+        error: function (data) {
+            console.log("Error: " + data);
+        }
+    });
+});
+
+
+
+
+
+
+
