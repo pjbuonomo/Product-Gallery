@@ -287,15 +287,62 @@ function updateListItem(itemId, itemData) {
             console.log("Error updating item: " + error);
         });
 }
+function openOffcanvas(itemId) {
+  // Fetch item details using SharePoint REST API
+  var apiUrl = _spPageContextInfo.webAbsoluteUrl + "/_api/web/lists/getbytitle('PurchaseRequests')/items(" + itemId + ")";
 
+  $.ajax({
+    url: apiUrl,
+    type: "GET",
+    headers: {
+      "Accept": "application/json;odata=verbose"
+    },
+    success: function(data) {
+      var itemData = data.d; // Retrieve the item data from the response
 
+      var offcanvasBody = '';
 
+      // Loop through each tag within the offcanvas menu
+      $('.offcanvas-menu span').each(function() {
+        var internalName = $(this).data('internalname');
+        var fieldValue = itemData[internalName];
 
+        // Append a form control input element based on the internalName
+        offcanvasBody += '<div class="form-group">';
+        offcanvasBody += '<label for="' + internalName + '">' + internalName + '</label>';
+        offcanvasBody += '<input type="text" class="form-control" id="' + internalName + '" value="' + fieldValue + '">';
+        offcanvasBody += '</div>';
+      });
 
+      // Save button
+      offcanvasBody += '<div class="section">';
+      offcanvasBody += '<button type="button" class="btn btn-primary save-button">Save</button>';
+      offcanvasBody += '</div>';
 
+      // Set the offcanvas body HTML
+      $('.offcanvas-body').html(offcanvasBody);
 
+      // Open the offcanvas
+      $('.offcanvas').offcanvas('show');
 
+      // Save button click event handler
+      $('.save-button').click(function() {
+        var updatedData = {};
 
+        // Loop through each input element and capture the updated values
+        $('.offcanvas-body input').each(function() {
+          var internalName = $(this).attr('id');
+          var value = $(this).val();
 
+          updatedData[internalName] = value;
+        });
 
-
+        // Send update request to update the SharePoint list item
+        updateListItem(itemId, updatedData);
+      });
+    },
+    error: function(error) {
+      console.log("Error retrieving item details: " + JSON.stringify(error));
+    }
+  });
+}
